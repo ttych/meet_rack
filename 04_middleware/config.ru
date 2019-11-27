@@ -9,6 +9,20 @@ require_relative 'file_logger'
 require_relative 'users_application'
 require_relative 'rides_application'
 
+#use Rack::Session::Cookie, secret: "chut!"
+#use Rack::Session::Pool
+use Rack::Session::Memcache
+#use Rack::Session::Dalli
+
+use Rack::Runtime
+use Rack::ContentType, "application/json"
+use Rack::ContentLength
+
+use Rack::ETag
+use Rack::ConditionalGet
+
+use Rack::Deflater
+
 if ENV["RACK_ENV"] == 'production'
   use Rack::NullLogger
   use Rack::CommonLogger
@@ -21,6 +35,13 @@ use FileLogger
 use ApiKey
 use ValidateContentType
 use WhoIsCalling
+
+use Rack::Sendfile
+use Rack::Static, urls: ["/docs"], root: "public"
+
+# map("/docs") do
+#   run Rack::File.new("./docs")
+# end
 
 map("/users") do
   run UsersApplication.new
