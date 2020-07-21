@@ -11,3 +11,13 @@ end
 map("/rides") do
   run RidesApplication.new
 end
+
+map("/nested") do
+  map("/users") do
+    run UsersApplication.new
+  end
+
+  map("/rides") do
+    run RidesApplication.new
+  end
+end
