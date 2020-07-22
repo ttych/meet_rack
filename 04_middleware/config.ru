@@ -11,17 +11,17 @@ require_relative 'rides_application'
 
 #use Rack::Session::Cookie, secret: "chut!"
 #use Rack::Session::Pool
-use Rack::Session::Memcache
+# use Rack::Session::Memcache
 #use Rack::Session::Dalli
 
-use Rack::Runtime
-use Rack::ContentType, "application/json"
+# use Rack::Runtime  # server perf
+use Rack::ContentType, "application/json"  # set default content-type
 use Rack::ContentLength
 
-use Rack::ETag
+use Rack::ETag  # http reponse finger print
 use Rack::ConditionalGet
 
-use Rack::Deflater
+# use Rack::Deflater  # compression
 
 if ENV["RACK_ENV"] == 'production'
   use Rack::NullLogger
@@ -35,6 +35,8 @@ use FileLogger
 use ApiKey
 use ValidateContentType
 use WhoIsCalling
+
+# use Rack::ShowStatus  # clean webpage in case of error
 
 use Rack::Sendfile
 use Rack::Static, urls: ["/docs"], root: "public"
